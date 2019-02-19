@@ -1,8 +1,7 @@
 # Site settings
 title: Midhun Thaduru
 description: >
-  A website for open source projects, blogs, hackathons etc. 
-baseurl: "/hello" # the subpath of your site, e.g. /blog/
+  A website for open source projects, blogs, hackathons etc.
 url: "https://midhunt.github.io" # the base hostname & protocol for your site
 
 author:
