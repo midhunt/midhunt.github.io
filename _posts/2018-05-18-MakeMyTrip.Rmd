@@ -1,0 +1,1206 @@
+---
+title: "MakeMyTrip Data Science Hiring Challenge"
+author: "Midhun Thaduru"
+date: "18 May 2018"
+output:
+  html_document:
+    code_folding: hide
+    fontsize: 14pt
+    highlight: monochrome
+    number_sections: no
+    theme: cosmo
+    toc: yes
+category: "Hackathons"    
+---
+
+```{r setup, include=FALSE, results='hide'}
+
+# Setting the chunk options
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, 
+                      warning = FALSE, message = FALSE)
+
+# Loading the required libraries
+library(data.table)
+library(ggplot2)
+library(plyr)
+library(rpart)
+library(rattle)
+library(randomForest)
+library(caret)
+library(e1071)
+library(cvAUC)
+
+# Changing theme of ggplot to black and white
+theme_set(theme_bw(12))
+
+```
+
+# Problem Statement
+
+The provided dataset contains:  
+* **train.csv** with 17 columns labeled as A-P, out of which A-O columns are the features and column P is the label. Column "id" specifies a unique number for every row.  
+* **test.csv** contains A-O columns for which column "P" has to be predicted for each records given in this file.  
+* **sample_submission.csv** which has to be exact format for evaluation.  
+
+The aim of this challenge is to predict column "P" for test set.  
+
+<br>
+
+# Reading and Exploring Dataset
+
+## Training Set
+
+```{r TrainingSet}
+
+# Loading training set into the environment
+dtTrain <- fread(
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/MakeMyTrip/Dataset/train.csv"
+  ),
+  stringsAsFactors = T
+)
+
+# Adding a column which can differentiate with the test set after binding
+dtTrain[, fileType := "train"]
+
+# Converting the dependent variable to factor
+dtTrain[, P := as.factor(P)]
+
+# Checking data types of variables
+str(dtTrain)
+
+# Printing summary stats of the variables
+summary(dtTrain)
+
+```
+
+## Test Set
+
+```{r TestingSet}
+
+# Loading testing set into the environment
+dtTest <- fread(
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/MakeMyTrip/Dataset/test.csv"
+  ),
+  stringsAsFactors = T
+)
+
+# Adding a column which can differentiate with the dtTraining set after binding
+dtTest[, fileType := "test"]
+
+# Checking data types of columns
+str(dtTest)
+
+# Printing summary stats
+summary(dtTest)
+
+```
+
+We can observe that training set and testing set have different factors levels for columns "D", "E" and "G".  
+
+```{r CompleteDataset}
+
+# Binding dtTraining and testing set together for EDA
+# Filling predictor variable "P" with NAs 
+dtDataset <- rbind.data.frame(dtTrain, dtTest, fill = T)
+
+# Extracting numeric independent variables
+numeric_cols <- names(dtDataset)[unlist(lapply(dtDataset, is.numeric))]
+
+# Ignoring ID and predictor variable from numeric columns
+numeric_cols <- numeric_cols[!(numeric_cols %in% c("id", "P"))]
+
+# Extracting factor variables
+factor_cols <- names(dtDataset)[unlist(lapply(dtDataset, is.factor))]
+
+# Ignoring variable from factor columns
+factor_cols <- factor_cols[!(factor_cols %in% "P")]
+
+```
+
+# Exploratory Data Analysis
+
+## Numeric Variables
+
+We can observe that columns B, C, H, K are on two digit numeric scale where as column N is ranging from `r min(dtDataset$N, na.rm = T)` to `r max(dtDataset$N, na.rm = T)` and column O is ranging from `r min(dtDataset$O, na.rm = T)` to `r max(dtDataset$O, na.rm = T)`.  
+
+```{r B_Boxplot}
+
+boxplot(dtDataset$B, 
+        main = "Summary Statistics of B")
+
+```
+
+<br>
+
+```{r B_Histogram}
+
+hist(dtDataset$B,
+     breaks = 50,
+     xlab = "B", 
+     ylab = "Frequency",
+     main = "Distribution of B")
+
+```
+
+<br>
+
+```{r BVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = B), 
+               width = 0.25) +
+  ggtitle("Summary Stats of B With Target P")
+
+```
+
+<br>
+
+```{r C_Boxplot}
+
+boxplot(dtDataset$C, 
+        main = "Summary Statistics of C")
+
+```
+
+<br>
+
+```{r C_Histogram}
+
+hist(dtDataset$C,
+     breaks = 50,
+     xlab = "C", 
+     ylab = "Frequency",
+     main = "Distribution of C")
+
+```
+
+<br>
+
+```{r CVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = C), 
+               width = 0.25) +
+  ggtitle("Summary Stats of C With Target P")
+
+```
+
+<br>
+
+```{r H_Boxplot}
+
+boxplot(dtDataset$H, 
+        main = "Summary Statistics of H")
+
+```
+
+<br>
+
+```{r H_Histogram}
+
+hist(dtDataset$H,
+     breaks = 50,
+     xlab = "H", 
+     ylab = "Frequency",
+     main = "Distribution of H")
+
+```
+
+<br>
+
+```{r HVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = H), 
+               width = 0.25) +
+  ggtitle("Summary Stats of H With target P")
+
+```
+
+<br>
+
+```{r K_Boxplot}
+
+boxplot(dtDataset$K,
+        main = "Summary Statistics of K")
+
+```
+
+<br>
+
+```{r K_Histogram}
+
+hist(dtDataset$K,
+     breaks = 50,
+     xlab = "K", 
+     ylab = "Frequency",
+     main = "Distribution of K")
+
+```
+
+<br>
+
+```{r KVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = K), 
+               width = 0.25) +
+  ggtitle("Summary Stats of K With Target P")
+
+```
+
+<br>
+
+```{r N_Boxplot}
+
+boxplot(dtDataset$N, 
+        main = "Summary Statistics of N")
+
+```
+
+<br>
+
+```{r N_Histogram}
+
+hist(dtDataset$N,
+     breaks = 50,
+     xlab = "N", 
+     ylab = "Frequency",
+     main = "Distribution of N")
+
+```
+
+<br>
+
+```{r NVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = N), 
+               width = 0.25) +
+  ggtitle("Summary Stats of N With Target P")
+
+```
+
+<br>
+
+```{r O_Boxplot}
+
+boxplot(dtDataset$O, 
+        main = "Summary Statistics of O")
+
+```
+
+<br>
+
+```{r O_Histogram}
+
+hist(dtDataset$O,
+     breaks = 50,
+     xlab = "O",
+     ylab = "Frequency",
+     main = "Distribution of O")
+
+```
+
+<br>
+
+```{r OVsP_Boxplot}
+
+ggplot(dtTrain) +
+  geom_boxplot(aes(x = P, y = O), 
+               width = 0.25) +
+  ggtitle("Summary Stats of O With Target P")
+
+```
+
+<br>
+
+## Categorical Variables
+
+```{r Distribution_A}
+
+dtFrequency_A <- dtDataset[, .N, by = "A"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_A) +
+  geom_bar(aes(x = A,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("A") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("A Distribution")
+
+```
+
+<br>
+
+```{r Distribution_AByP}
+
+dtFrequency_AByP <- dtTrain[, .N, by = c("A", "P")][, N_pct := N/sum(N), by = "A"]
+
+ggplot(dtFrequency_AByP) +
+  geom_bar(aes(x = A, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", width = 0.30) +
+  xlab("A") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("A Distribution By P")
+
+```
+
+<br>
+
+```{r Distribution_D}
+
+dtFrequency_D <- dtDataset[, .N, by = "D"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_D) +
+  geom_bar(aes(x = D,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("D") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("D Distribution")
+ 
+```
+
+<br>
+
+```{r Distribution_DbyP}
+
+dtFrequency_DByP <- dtTrain[, .N, by = c("D", "P")][, N_pct := N/sum(N), by = "D"]
+
+ggplot(dtFrequency_DByP) +
+  geom_bar(aes(x = reorder(D, -N_pct), 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           width = 0.30) +
+  xlab("D") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("D Distribution by P")
+
+```
+
+<br>
+
+```{r Distribution_E}
+
+dtFrequency_E <- dtDataset[, .N, by = "E"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_E) +
+  geom_bar(aes(x = E,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("E") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("E Distribution")
+
+```
+
+<br>
+
+```{r Distribution_EByP}
+
+dtFrequency_EByP <- dtTrain[, .N, by = c("E", "P")][, N_pct := N/sum(N), by = "E"]
+
+ggplot(dtFrequency_EByP) +
+  geom_bar(aes(x = E, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack", 
+           width = 0.30) +
+  xlab("E") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("E Distribution By P")
+
+```
+
+<br>
+
+```{r Distribution_F}
+
+dtFrequency_F <- dtDataset[, .N, by = "F"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_F) +
+  geom_bar(aes(x = F,
+               y = N_pct),
+           stat = "identity") +
+  xlab("F") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("F Distribution")
+
+```
+
+<br>
+
+```{r Distribution_FByP}
+
+dtFrequency_FByP <- dtTrain[, .N, by = c("F", "P")][, N_pct := N/sum(N), by = "F"]
+
+ggplot(dtFrequency_FByP) +
+  geom_bar(aes(x = F, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack") +
+  xlab("F") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("F Distribution By P")
+
+```
+ 
+<br>
+
+```{r Distribution_G}
+
+dtFrequency_G <- dtDataset[, .N, by = "G"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_G) +
+  geom_bar(aes(x = G,
+               y = N_pct),
+           stat = "identity") +
+  xlab("G") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("G Distribution")
+
+```
+ 
+<br>
+ 
+```{r Distribution_GByP}
+
+dtFrequency_GByP <- dtTrain[, .N, by = c("G", "P")][, N_pct := N/sum(N), by = "G"]
+
+ggplot(dtFrequency_GByP) +
+  geom_bar(aes(x = G, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack") +
+  xlab("G") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("G Distribution By P")
+
+```
+
+<br>
+
+```{r Distribution_I}
+
+dtFrequency_I <- dtDataset[, .N, by = "I"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_I) +
+  geom_bar(aes(x = I,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("I") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("I Distribution")
+
+```
+
+<br>
+
+```{r Distribution_IByP}
+
+dtFrequency_IByP <- dtTrain[, .N, by = c("I", "P")][, N_pct := N/sum(N), by = "I"]
+
+ggplot(dtFrequency_IByP) +
+  geom_bar(aes(x = I, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack", 
+           width = 0.30) +
+  xlab("I") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("I Distribution By P")
+
+```
+
+<br>
+
+```{r Distribution_J}
+
+dtFrequency_J <- dtDataset[, .N, by = "J"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_J) +
+  geom_bar(aes(x = J,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("J") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("J Distribution")
+
+```
+
+<br>
+
+```{r Distribution_JByP}
+
+dtFrequency_JByP <- dtTrain[, .N, by = c("J", "P")][, N_pct := N/sum(N), by = "J"]
+
+ggplot(dtFrequency_JByP) +
+  geom_bar(aes(x = J, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack", 
+           width = 0.30) +
+  xlab("J") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("J Distribution By P")
+
+```
+
+<br>
+
+```{r Distribution_L}
+
+dtFrequency_L <- dtDataset[, .N, by = "L"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_L) +
+  geom_bar(aes(x = L,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("L") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("L Distribution")
+
+```
+
+<br>
+
+```{r Distribution_LByP}
+
+dtFrequency_LByP <- dtTrain[, .N, by = c("L", "P")][, N_pct := N/sum(N), by = "L"]
+
+ggplot(dtFrequency_LByP) +
+  geom_bar(aes(x = L, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack", 
+           width = 0.30) +
+  xlab("L") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("L Distribution By P")
+
+```
+
+<br>
+
+```{r Distribition_M}
+
+dtFrequency_M <- dtDataset[, .N, by = "M"][, N_pct := N/sum(N)]
+
+ggplot(dtFrequency_M) +
+  geom_bar(aes(x = M,
+               y = N_pct),
+           stat = "identity", 
+           width = 0.30) +
+  xlab("M") + ylab("%") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("M Distribution")
+
+```
+
+<br>
+
+```{r Distribition_MByP}
+
+dtFrequency_MByP <- dtTrain[, .N, by = c("M", "P")][, N_pct := N/sum(N), by = "M"]
+
+ggplot(dtFrequency_MByP) +
+  geom_bar(aes(x = M, 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", 
+           position = "stack", 
+           width = 0.30) +
+  xlab("M") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("M Distribution By P")
+
+```
+
+<br>
+
+# Feature Engineering
+
+Continuous variables K and O have `r round(nrow(dtDataset[K == 0])/nrow(dtDataset) * 100)` % and `r round(nrow(dtDataset[O == 0])/nrow(dtDataset) * 100)` % of zero's. I will try various methods to categorise them and explore.
+
+```{r H_Binning}
+
+dtDataset[, H_Bins := cut(H, 
+                          quantile(H, probs = seq(0, 1, 0.20)), 
+                          include.lowest = T)]
+
+dtTrain <- dtDataset[fileType == "train"]
+
+dtFrequency_H_Bins <- dtTrain[, .N, by = c("H_Bins", "P")][, N_pct := N/sum(N), 
+                                                           by = "H_Bins"]
+
+ggplot(dtFrequency_H_Bins) +
+  geom_bar(aes(x = reorder(H_Bins, -N_pct), 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", width = 0.30) +
+  xlab("H_Bins") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("H_Bins Distribution By P")
+
+
+```
+
+<br>
+
+```{r K_NotZero}
+
+dtDataset[, K_NotZero := ifelse(K > 0, 1, 0)]
+
+dtTrain <- dtDataset[fileType == "train"]
+
+dtFrequency_K_NotZero <- dtTrain[, .N, by = c("K_NotZero", "P")][, N_pct := N/sum(N), 
+                                                           by = "K_NotZero"]
+
+ggplot(dtFrequency_K_NotZero) +
+  geom_bar(aes(x = reorder(K_NotZero, -N_pct), 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", width = 0.30) +
+  xlab("K_NotZero") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("K_NotZero Distribution By P")
+
+```
+
+<br>
+
+```{r O_NotZero}
+
+dtDataset[, O_NotZero := ifelse(O > 0, 1, 0)]
+
+dtTrain <- dtDataset[fileType == "train"]
+
+dtFrequency_O_NotZero <- dtTrain[, .N, by = c("O_NotZero", "P")][, N_pct := N/sum(N), 
+                                                           by = "O_NotZero"]
+
+ggplot(dtFrequency_O_NotZero) +
+  geom_bar(aes(x = reorder(O_NotZero, -N_pct), 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", width = 0.30) +
+  xlab("O_NotZero") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("O_NotZero Distribution By P")
+
+```
+
+<br>
+
+```{r O_Quantile}
+
+dtDataset[, O_Bins := cut(O, 
+                          quantile(O, probs = seq(0, 1, 0.50)), 
+                          include.lowest = T)]
+
+dtTrain <- dtDataset[fileType == "train"]
+
+dtFrequency_O_Bins <- dtTrain[, .N, by = c("O_Bins", "P")][, N_pct := N/sum(N), 
+                                                           by = "O_Bins"]
+
+ggplot(dtFrequency_O_Bins) +
+  geom_bar(aes(x = reorder(O_Bins, -N_pct), 
+               y = N_pct, 
+               fill = P, 
+               group = P), 
+           stat = "identity", width = 0.30) +
+  xlab("O_Bins") + ylab("%") + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(labels = scales::percent) +
+  ggtitle("O_Bins Distribution By P")
+
+```
+
+<br>
+
+# Modelling
+
+We have observed that there are missing values in few columns of training and testing sets but during modeling we cannot have missing values in the dataset. So, we are going to employ following methods to treat missing values.  
+
+## Complete Cases Method
+
+There are missing values in Training as well as Testing  sets. So we cannot delete rows in testing set for model testing.  
+
+## Ignoring the Variables 
+
+Columns B and N have missing numeric values and columns A, D, E and G have missing categorical values. I will ignore these columns for modelling and see its performance.  
+
+```{r IgnoringVariablesModel}
+
+dtTrain <- dtDataset[fileType == "train"]
+
+dtTest <- dtDataset[fileType == "test"]
+
+dtTest[, P := NULL]
+
+glm.Model1 <- glm(P ~ C + F + H + I + J + K + L + O, data = dtTrain,
+              family = binomial(link = "logit"))
+
+```
+
+```{r GLMModel1ForPrediction}
+
+dtTrain[, Predicted := predict(glm.Model1, dtTrain, type = "response")]
+
+dtTrain[, Predicted_P := ifelse(Predicted > 0.5, 1, 0)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(dtTrain$Predicted_P, dtTrain$P)`.  
+
+```{r TestingGLMModel1}
+
+dtTest[, Predicted := predict(glm.Model1, dtTest, type = "response")]
+
+dtTest[, P := ifelse(Predicted > 0.5, 1, 0)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/IgnoringMissingDataVariables.csv"
+          ),
+          row.names = F)
+
+```
+
+## Data Imputation
+
+```{r DataImputation}
+
+# Function to calculate mode of a column
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+# Converting categorical factor columns to character format
+dtDataset[, (factor_cols) := lapply(.SD, 
+                                    function(x){
+                                      as.character(x)
+                                    }), 
+          .SDcols = (factor_cols)]
+
+# Assigning empty string in categorical columns with Mode of the column 
+dtDataset[, (factor_cols) := lapply(.SD, 
+                                    function(x){
+                                      ifelse(x == "", Mode(x), x)
+                                    }), 
+          .SDcols = (factor_cols)]
+
+# Assigning median for missing or NAs of columns 
+dtDataset[, (numeric_cols) := lapply(.SD, 
+                                     function(x){
+                                       ifelse(is.na(x), median(x, na.rm = T), x)
+                                     }), 
+          .SDcols = (numeric_cols)]
+
+# Converting categorical character columns to factor format
+dtDataset[, (factor_cols) := lapply(.SD, 
+                                    function(x){
+                                      as.factor(x)
+                                    }), 
+          .SDcols = (factor_cols)]
+
+```
+
+
+```{r MedianModeModel}
+
+# Extracting train set and test set from the complete dataset
+dtTrain <- dtDataset[fileType == "train"]
+dtTest <- dtDataset[fileType == "test"]
+
+# Removing empty "P"  column from the test set
+dtTest[, "P" := NULL]
+
+glm.Model2 <- glm(P ~ A + B + C + D + E + F + G + H + I + J + K + L + M + N + O, 
+              data = dtTrain, family = binomial(link = "logit"))
+
+```
+
+<br>
+
+```{r GLMModel2ForPrediction}
+
+dtTrain[, Predicted := predict(glm.Model2, dtTrain, type = "response")]
+
+dtTrain[, Predicted_P := ifelse(Predicted > 0.5, 1, 0)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(dtTrain$Predicted_P, dtTrain$P)`.    
+
+```{r TestingGLMModel2}
+
+dtTest[, Predicted := predict(glm.Model2, dtTest, type = "response")]
+
+dtTest[, P := ifelse(Predicted > 0.5, 1, 0)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/MedianMode.csv"
+          ),
+          row.names = F)
+
+
+```
+
+<br.
+
+## Binning High Variance O Variable
+
+```{r O_Bin_Model}
+
+glm.Model3 <- glm(P ~ A + B + C + D + E + F + G + H + I + J + K + L + M + N + O_Bins, 
+              data = dtTrain, family = binomial(link = "logit"))
+
+```
+
+<br>
+
+```{r Model3Prediction}
+
+dtTrain[, Predicted := predict(glm.Model3, dtTrain, type = "response")]
+
+dtTrain[, Predicted_P := ifelse(Predicted > 0.5, 1, 0)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(dtTrain$Predicted_P, dtTrain$P)`.    
+
+```{r TestingModel3}
+
+dtTest[, Predicted := predict(glm.Model3, dtTest, type = "response")]
+
+dtTest[, P := ifelse(Predicted > 0.5, 1, 0)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/O_Binning_Output.csv"
+          ),
+          row.names = F)
+
+```
+
+<br>
+
+## Support Vector Machine (Linear Model)
+
+```{r SVMLinearMethod}
+
+trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+
+svmLinear.Model1 <- train(P ~ A + B + C + D + E + F + G + H + I + J + K + 
+                              L + M + N + O_Bins,
+                          data = dtTrain,
+                          method = "svmLinear", trControl = trctrl,
+                          preProcess = c("center", "scale"),
+                          tuneLength = 10)
+
+```
+
+<br>
+
+```{r SVMLinearModelPrediction}
+
+dtTrain[, Predicted_P := predict(svmLinear.Model1, dtTrain)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingLinearModel}
+
+dtTest[, P := predict(svmLinear.Model1, dtTest)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/SVM_Linear_ModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+
+<br>
+
+## Support Vector Machine (Radial Model)
+
+```{r SVMRadialMethod, warning=FALSE, message=FALSE}
+
+svmRadial.Model1 <- train(P ~ A + B + C + D + E + F + G + H + I + J + K + 
+                              L + M + N + O_Bins,
+                          data = dtTrain,
+                          method = "svmRadial", trControl = trctrl,
+                          preProcess = c("center", "scale"),
+                          tuneLength = 10)
+
+```
+
+<br>
+
+```{r PredictingSVMRadial}
+
+dtTrain[, Predicted_P := predict(svmRadial.Model1, dtTrain)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingSVMRadialModel}
+
+dtTest[, P := predict(svmRadial.Model1, dtTest)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/SVM_Radial_ModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+
+
+## Niave Bayes Classifier
+
+```{r NaiveBayesClassification}
+
+naiveBayes.Model1 <- naiveBayes(P ~ A + B + C + D + E + F + G + H + I + J + K + 
+                              L + M + N + O_Bins, data = dtTrain)
+
+```
+
+<br>
+
+```{r PredictionNaivebayesModel}
+
+dtTrain[, Predicted_P := predict(naiveBayes.Model1, dtTrain)]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingNaiveBayes}
+
+dtTest[, P := predict(naiveBayes.Model1, dtTest)]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/NaiveBayes_ModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+
+<br>
+
+## Tree Based Model
+
+```{r TreeBasedClassification}
+
+tree.Model1 <- rpart(P ~ A + B + C + D + E + F + G + H + I + J + 
+                       K + L + M + N + O_Bins,
+                     data = dtTrain, method = "class")
+
+fancyRpartPlot(tree.Model1)
+
+```
+
+<br>
+
+```{r PredictionWithTreeModel}
+
+dtTrain[, Predicted_P := predict(tree.Model1, dtTrain, type = "class")]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingTreeModel}
+
+dtTest[, P := predict(tree.Model1, dtTest, type = "class")]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/TreeModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+
+<br>
+
+## Random Forest
+
+```{r RandomForest}
+
+dtTrain <- dtDataset[fileType == "train"]
+
+rf.Model1 <- randomForest(P ~ A + B + C + D + E + F + G + H + I + J + K + 
+                              L + M + N + O_Bins,
+                     data = dtTrain, ntree = 100, mtry = 5)
+
+```
+
+<br>
+
+```{r PredictionWithRF1}
+
+dtTrain[, Predicted_P := predict(rf.Model1, dtTrain, type = "class")]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingRF1}
+
+dtTest[, P := predict(rf.Model1, dtTest, type = "class")]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/rfModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+
+## Random Forest With K Classified
+
+```{r RFModel2}
+
+rf.Model2 <- randomForest(P ~ A + B + C + D + E + F + G + H_Bins + I + J + 
+                            K_NotZero + L + M + N + O_Bins,
+                     data = dtTrain, ntree = 100, mtry = 5)
+
+```
+
+
+```{r PredictionWithRF2}
+
+dtTrain[, Predicted_P := predict(rf.Model2, dtTrain, type = "class")]
+
+confusionMatrix(as.factor(dtTrain$Predicted_P), dtTrain$P)
+
+```
+
+<br>
+
+The Area under the ROC curve is `r AUC(as.numeric(dtTrain$Predicted_P), as.numeric(dtTrain$P))`.    
+
+```{r TestingRF2}
+
+dtTest[, P := predict(rf.Model2, dtTest, type = "class")]
+
+dtSubmission <- dtTest[,.(id, P)]
+
+write.csv(dtSubmission,
+          paste0(
+            Sys.getenv("MyGitRepo"),
+            "/MakeMyTrip/Outputs/rf2_ModelOutput.csv"
+          ),
+          row.names = F)
+
+```
+

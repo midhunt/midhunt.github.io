@@ -1,0 +1,572 @@
+---
+layout: post
+title: "McKinsey Hackathon - Prediction of Probability of Stroke for Each Patient"
+author: "Midhun Thaduru"
+date: "14 April 2018"
+output: 
+  html_document:
+    keep_md: true
+    code_folding: hide
+    highlight: monochrome
+    number_sections: false
+    theme: cosmo
+    toc: true
+category: "Hackathons"
+---
+
+```{r setup, include=FALSE}
+
+# Remove existing object from the environment
+rm(list = ls())
+
+# changing default chunk options
+knitr::opts_chunk$set(eval = TRUE, message = FALSE, warning = FALSE)
+
+# Loading the required libraries
+library(data.table)
+library(ggplot2)
+library(caret)
+
+```
+
+
+# Introduction
+[McKinsey Hiring Hackathon in Healthcare Analytics](https://datahack.analyticsvidhya.com/contest/mckinsey-analytics-online-hackathon/) is a prediction of probability problem for stroke happening to the patients. The prediction of stroke will help the doctors to take proactive health measures for these patients.  
+
+
+```{r DataWrangling}
+
+# Loading the training set
+dtTrain <- fread(
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/McKinsey/Datasets/train_ajEneEa.csv"
+  )
+)
+
+# Grouping Ages
+dtTrain[, AgeBin := cut(age,
+                        breaks = seq(0, 90, 10),
+                        include.lowest = T)]
+
+# Creating Bins and categorise missing values as Unknown
+dtTrain[, BMIBin := cut(bmi,
+                        breaks = c(0, 15, 16, 18.5, 25, 30, 35, 40, 100),
+                        labels = c("Very severely underweight",
+                                   "Severely underweight",
+                                   "Underweight",
+                                   "Normal",
+                                   "Overweight",
+                                   "Moderately obese",
+                                   "Severely obese",
+                                   "Very severely obese"),
+                        include.lowest = T)]
+
+dtTrain[is.na(BMIBin), BMIBin := "Unknown"]
+
+dtTrain[, BMIBin := factor(BMIBin,
+                           levels = c("Very severely underweight",
+                                      "Severely underweight",
+                                      "Underweight",
+                                      "Normal",
+                                      "Overweight",
+                                      "Moderately obese",
+                                      "Severely obese",
+                                      "Very severely obese",
+                                      "Unknown"))]
+
+# Empty string in smoking_status are coverted as unknown
+dtTrain[, smoking_status := ifelse(smoking_status == "",
+                                   "Unknown", smoking_status)]
+
+# Grouping Glucose levels as bins
+dtTrain[, GlucoseLevelBins := cut(avg_glucose_level, 
+                                  breaks = seq(50, 300, 50), 
+                                  include.lowest = T)]
+
+```
+
+The client has collected several health, demographic and lifestyle details of patients such as `r names(dtTrain)[!names(dtTrain) %in% "id"]`.
+
+# Exploratory Data Analysis
+Single variable analysis will help understand the importance each variable
+
+## Age Group
+
+```{r AgeGroup}
+
+AgeSampleGroup <- dtTrain[, .(Sample_N = .N), 
+                        by = "AgeBin"][, Sample_pct := Sample_N/sum(Sample_N)]
+
+AgeStrokeGroup <- dtTrain[stroke == T, 
+                          .(Stroke_N = .N), 
+                          by = c("AgeBin")][, Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+AgeGroup <- merge(AgeSampleGroup,
+                  AgeStrokeGroup,
+                  by = "AgeBin",
+                  all = T)
+
+AgeGroup[, N_pct := Stroke_N/Sample_N]
+
+ggplot(AgeGroup) +
+  geom_bar(aes(x = AgeBin, y = N_pct), stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Age Groups") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke In Each Age Group")
+
+
+```
+
+Number of people affected with stroke increased with Age Group.  
+
+## BMI Group
+
+```{r BMIGroup}
+
+BMISampleGroup <- dtTrain[, .(Sample_N = .N), 
+                          by = BMIBin][, 
+                    Sample_pct := Sample_N/sum(Sample_N)]
+
+
+BMIStrokeGroup <- dtTrain[stroke == T, .(Stroke_N = .N), 
+                          by = BMIBin][, Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+
+BMIGroup <- merge(BMISampleGroup,
+                  BMIStrokeGroup,
+                  by = "BMIBin",
+                  all = T)
+
+BMIGroup[, N_pct := Stroke_N/Sample_N]
+
+ggplot(BMIGroup) +
+  geom_bar(aes(x = BMIBin, y = N_pct), stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("BMI Groups") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke in Each BMI Group") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+```
+
+Note: BMI index is grouped based on [WHO Statistical categories](https://en.wikipedia.org/wiki/Body_mass_index#Categories) to understand the pattern of BMI in the patients who were affected by stroke. All the *NAs* are grouped as **Unknown**.    
+
+Patients with higher BMI has increasing trend stroke.   
+
+## Work Type
+
+```{r WorkType}
+
+# How does work type affect the stroke 
+WorkTypeSampleGroups <- dtTrain[, .(Samaple_N = .N), 
+                                by = "work_type"][, 
+                          Sample_pct := Samaple_N/sum(Samaple_N)]
+
+WorkTypeStrokeGroups <- dtTrain[stroke == T, .(Stroke_N = .N), 
+                            by = "work_type"][, 
+                          Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+WorkType <- merge(WorkTypeSampleGroups,
+                  WorkTypeStrokeGroups,
+                  by = "work_type",
+                  all = T)
+
+WorkType[, c("Stroke_N", 
+             "Stroke_pct") := lapply(.SD, 
+                                     function(x){
+                                       x = ifelse(is.na(x), 0, x)
+                                     }), 
+         .SDcols = c("Stroke_N", 
+                     "Stroke_pct")]
+
+WorkType[, N_pct := Stroke_N/Samaple_N]
+
+ggplot(WorkType) +
+  geom_bar(aes(x = work_type, y = N_pct), stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Work Type") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke In Each Age Group")
+
+
+```
+
+People who are self-employed are more prone to stroke.
+
+## Hypertension
+
+```{r Hypertension}
+
+HypertensionSampleGroup <- dtTrain[, .(Sample_N = .N),
+                                   by = hypertension][, 
+                            Sample_pct := Sample_N/sum(Sample_N)]
+
+HypertensionStrokeGroup <- dtTrain[stroke == T, .(Stroke_N = .N),
+                                   by = hypertension][, 
+                          Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+Hypertension <- merge(HypertensionSampleGroup,
+                      HypertensionStrokeGroup,
+                      by = "hypertension",
+                      all = T)
+
+Hypertension[, N_pct := Stroke_N/Sample_N]
+
+ggplot(Hypertension) +
+  geom_bar(aes(x = hypertension, y = N_pct), 
+           stat = "identity", width = 0.25) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Hypertension") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke Who Has Hypertension")
+
+
+```
+
+Patients with hypertension has high risk of stroke.    
+
+## Heart Diseases
+
+```{r HeartDisease}
+
+HeartDiseaseSampleGroup <- dtTrain[, .(Sample_N = .N), 
+                                   by = heart_disease][, 
+                          Sample_pct := Sample_N/sum(Sample_N)]
+
+HeartDiseaseStrokeGroup <- dtTrain[stroke == TRUE, .(Stroke_N = .N), 
+                                   by = heart_disease][, 
+                              Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+HeartDisease <- merge(HeartDiseaseSampleGroup,
+                      HeartDiseaseStrokeGroup,
+                      by = "heart_disease",
+                      all = T)
+
+HeartDisease[, N_pct := Stroke_N/Sample_N]
+
+ggplot(HeartDisease) +
+  geom_bar(aes(x = heart_disease, y = N_pct), 
+           stat = "identity", width = 0.25) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Heart Disease") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke Who Has Heart Diseases")
+
+
+```
+
+Patients with heart disease high chance of stroke.    
+
+## Smoking Status
+
+```{r Smoking}
+
+SmokingSampleGroup <- dtTrain[, .(Sample_N = .N),
+                              by = smoking_status][, 
+                          Sample_pct := Sample_N/sum(Sample_N)]
+
+
+SmokingStrokeGroup <- dtTrain[stroke == TRUE, .(Stroke_N = .N),
+                              by = smoking_status][, 
+                       Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+Smoking <- merge(SmokingSampleGroup,
+                 SmokingStrokeGroup,
+                 by = "smoking_status",
+                 all = T)
+
+Smoking[, N_pct := Stroke_N/Sample_N]
+
+ggplot(Smoking) +
+  geom_bar(aes(x = smoking_status, y = N_pct), 
+           stat = "identity", width = 0.4) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Smoking Status") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke Who Smoke")
+
+
+```
+
+Hypothesis is patients who formerly smoked or smokes has higher chance of stroke but there data does not show significant difference with the patients who never smoked.     
+
+## Healthy Patients
+
+Patient who does not have heart disease or hypertension or who has never smoked or whose BMI Index is normal is considered to healthy.
+
+```{r HealthyPatients}
+
+HealthySampleGroup <- dtTrain[hypertension == F & 
+                               heart_disease == F & 
+                               smoking_status == "never smoked" & 
+                               BMIBin == "Normal", 
+                             .(Sample_N = .N), 
+                             by = AgeBin][, Sample_pct := Sample_N/sum(Sample_N)]
+
+HealthyStrokeGroup <- dtTrain[hypertension == F & 
+                               heart_disease == F & 
+                               smoking_status == "never smoked" & 
+                               BMIBin == "Normal" & 
+                               stroke == T, 
+                             .(Stroke_N = .N), 
+                             by = AgeBin][, Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+HealthyGroup <- merge(HealthySampleGroup,
+                      HealthyStrokeGroup,
+                      by = "AgeBin",
+                      all = T)
+
+HealthyGroup[, c("Stroke_N", 
+                 "Stroke_pct") := lapply(.SD,
+                                         function(x){
+                                           x = ifelse(is.na(x), 0, x)
+                                         }),
+             .SDcols = c("Stroke_N", 
+                         "Stroke_pct")]
+
+HealthyGroup[, N_pct := Stroke_N/Sample_N]
+
+ggplot(HealthyGroup) +
+  geom_bar(aes(x = AgeBin, y = N_pct), stat = "identity") +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Age Group") +
+  ylab("% Patients") +
+  ggtitle("Healthy Patients Affected With Stroke")
+
+
+```
+
+Patients who were healthy and affected by stroke belong to the higher age group.    
+
+## Gender
+
+```{r Gender}
+
+GenderSampleGroups <- dtTrain[, .(Sample_N = .N),
+                                     by = "gender"][,
+                                  Sample_pct := Sample_N/sum(Sample_N)]
+
+GenderStrokeGroups <- dtTrain[stroke == T, .(Stroke_N = .N),
+                                     by = "gender"][,
+                                  Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+Gender <- merge(GenderSampleGroups,
+                GenderStrokeGroups,
+                by = "gender",
+                all = T)
+
+Gender[, N_pct := Stroke_N/Sample_N]
+
+ggplot(Gender) +
+  geom_bar(aes(x = gender, y = N_pct), 
+           stat = "identity", width = 0.25) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Gender") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke In Each Gender Group")
+
+
+```
+
+Gender doesn't show significant difference in stroke.
+
+## Residence Type
+
+```{r ResidenceType}
+
+# How does Residence_type affect the stroke
+ResidenceTypeSampleGroups <- dtTrain[, .(Sample_N = .N),
+                                     by = "Residence_type"][,
+                                  Sample_pct := Sample_N/sum(Sample_N)]
+
+ResidenceTypeStrokeGroups <- dtTrain[stroke == TRUE, .(Stroke_N = .N),
+                                     by = "Residence_type"][,
+                                    Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+ResidenceType <- merge(ResidenceTypeSampleGroups,
+                       ResidenceTypeStrokeGroups,
+                       by = "Residence_type")
+
+ResidenceType[, N_pct := Stroke_N/Sample_N]
+
+ggplot(ResidenceType) +
+  geom_bar(aes(x = Residence_type, y = N_pct), 
+           stat = "identity", width = 0.25) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Residence Type") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke In Each Residence Group")
+
+```
+
+Patients who live in rural or urban does not significant difference in stroke.
+
+## Marital Status
+
+```{r Marriage}
+
+EverMarriedSampleGroup <- dtTrain[, .(Sample_N = .N), 
+                       by = ever_married][, 
+                    Sample_pct := Sample_N/sum(Sample_N)]
+
+
+EverMarriedStrokeGroup <- dtTrain[stroke == T, .(Stroke_N = .N), 
+                                  by = ever_married][, 
+                              Stroke_pct := Stroke_N/sum(Stroke_N)]
+
+EverMarried <- merge(EverMarriedSampleGroup,
+                     EverMarriedStrokeGroup,
+                     by = "ever_married",
+                     all = T)
+
+EverMarried[, N_pct := Stroke_N/Sample_N]
+
+ggplot(EverMarried) +
+  geom_bar(aes(x = ever_married, y = N_pct), 
+           stat = "identity", width = 0.25) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab("Married") +
+  ylab("% Patients") +
+  ggtitle("Patients Affected With Stroke Because of Marriage")
+
+
+```
+
+Patients who are married has higher stroke % compared to single but correlation does not mean causation.   
+
+
+
+```{r TestingDataset}
+
+# Wrangling Testing Dataset
+dtTest <- fread(
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/McKinsey/Datasets/test_v2akXPA.csv"
+  )
+)
+
+dtTest[, AgeBin := cut(age,
+                       breaks = seq(0, 90, 10),
+                       include.lowest = T)]
+
+dtTest[, BMIBin := cut(bmi,
+                        breaks = c(0, 15, 16, 18.5, 25, 30, 35, 40, 100),
+                        labels = c("Very severely underweight",
+                                   "Severely underweight",
+                                   "Underweight",
+                                   "Normal",
+                                   "Overweight",
+                                   "Moderately obese",
+                                   "Severely obese",
+                                   "Very severely obese"),
+                        include.lowest = T)]
+
+dtTest[is.na(BMIBin), BMIBin := "Unknown"]
+
+dtTest[, BMIBin := factor(BMIBin,
+                           levels = c("Very severely underweight",
+                                      "Severely underweight",
+                                      "Underweight",
+                                      "Normal",
+                                      "Overweight",
+                                      "Moderately obese",
+                                      "Severely obese",
+                                      "Very severely obese",
+                                      "Unknown"))]
+
+dtTest[, smoking_status := ifelse(smoking_status == "",
+                                   "Unknown", smoking_status)]
+
+dtTest[, GlucoseLevelBins := cut(avg_glucose_level, 
+                                  breaks = seq(50, 300, 50), 
+                                  include.lowest = T)]
+
+```
+
+
+```{r SubmissionFile}
+
+# Submission file
+dtSubmission <- fread(
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/McKinsey/Datasets/sample_submission_1.csv"
+  )
+)
+
+
+```
+
+# Modelling
+
+The dataset has continuous, categorical independent variable and binominal dependent variable. We can predict the probability of stroke for each patient using Logistic Regression.
+
+## Logistic Regression
+
+```{r Model}
+
+model1 <- glm(stroke ~ age + gender + hypertension + heart_disease + 
+                smoking_status + avg_glucose_level + BMIBin + work_type +
+                ever_married + Residence_type,
+    data = dtTrain, family = binomial(link = "logit"))
+
+varImp(model1)
+
+```
+
+
+Gender, residence, work type and marital status has very less variable importance, removing such variables and remodelling.  
+
+
+```{r VariableImportance}
+
+# BMI values have been missing
+# BMI Index has been grouped based on WHO Statistical categories
+# Missing BMI values are grouped as Unknown
+model2 <- glm(stroke ~ AgeBin + hypertension + heart_disease + 
+                smoking_status + GlucoseLevelBins + BMIBin + work_type,
+    data = dtTrain, family = binomial(link = "probit"))
+
+dtTrain[, predictedProbabilites := predict(model2, type = "response")]
+
+dtProbCurve <- as.data.table(dtTrain[, predictedProbabilites])
+
+setnames(dtProbCurve, "predictedProbabilites")
+
+setorder(dtProbCurve, "predictedProbabilites")
+
+ggplot(dtProbCurve) +
+     geom_point(aes(x = as.numeric(row.names(dtProbCurve)),
+                y = predictedProbabilites)) + 
+  xlab("Index") +
+  ylab("Probability") +
+  ggtitle("Probability Distribution Curve of Training Set")
+
+dtTrain[, predictedStroke := ifelse(predictedProbabilites > 0.030,
+                                    TRUE, FALSE)]
+
+# # Confusion Matrix
+# confusionMatrix(dtTrain$stroke, dtTrain$predictedStroke)
+
+dtSubmission[, stroke := predict(model2, dtTest, type = "response")]
+
+```
+
+
+```{r SaveSubmissionFile}
+
+write.csv(
+  dtSubmission,
+  paste0(
+    Sys.getenv("MyGitRepo"),
+    "/McKinsey/Datasets/sample_submission_1.csv"
+  ),
+  row.names = F
+)
+
+```
+
