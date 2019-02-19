@@ -26,5 +26,5 @@ esitemap:
 </style>
 
 <div class="footer">
- <p><**Note:** This site is under construction. Please contant administrator for grievances.</p>
+ <p><b>Note:</b> This site is under construction. Please contant administrator for grievances.</p>
 </div>
