@@ -25,5 +25,5 @@ esitemap:
 </style>
 
 <div class="footer">
-  <p><b>Note:</b> This website is built using Jekyll Pudhina theme and is under construction, please contact administrator if you have any complaints</p>
+  <p><b>Note:</b> This website is under construction, please contact administrator if you have any complaints</p>
 </div> 

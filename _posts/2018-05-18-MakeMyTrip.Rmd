@@ -2,14 +2,14 @@
 title: "MakeMyTrip Data Science Hiring Challenge"
 author: "Midhun Thaduru"
 date: "18 May 2018"
-output:
+output: 
   html_document:
+    keep_md: true
     code_folding: hide
-    fontsize: 14pt
     highlight: monochrome
-    number_sections: no
+    number_sections: false
     theme: cosmo
-    toc: yes
+    toc: true
 category: "Hackathons"    
 ---
 
