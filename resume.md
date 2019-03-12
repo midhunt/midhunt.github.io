@@ -40,7 +40,7 @@ Building metrics to understand the customer charging behaviour to improve chargi
 #### Birla Institute of Technology and Science, Pilani <span style="float: right; ">2009 - 2013</span>  
 **Bachelor of Pharmacy(Honours)**  
 Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management    
- 
+
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
 **AISSCE (M.P.C, Computer Science)**  
 Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2006.  
