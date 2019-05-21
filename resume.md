@@ -56,9 +56,9 @@ Authored an article on the importance of visualization, steps involved in the pr
 techniques, popular methods in data visualization and available open source data visualization tools.
 
 ### LANGUAGES
-<img src="{{ '/assets/img/rprogramming.jpg' | prepend: site.baseurl }}" id="rprogramming-tool">
-<img src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">
-<img src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool">
+<img align = "left" src="{{ '/assets/img/rprogramming.jpg' | prepend: site.baseurl }}" id="rprogramming-tool"><img align = "center" src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool"><img align = "right" src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">
+
+
 
 ### TOOLS
 <img src="{{ '/assets/img/elasticbeanstalk.png' | prepend: site.baseurl }}" id="elasticbeanstalk-tool">
