@@ -55,6 +55,15 @@ Achieved second in Math Olympiad Test at school level and selected for Regional 
 Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical
 techniques, popular methods in data visualization and available open source data visualization tools.
 
-### Tools & Languages
-<img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
+### LANGUAGES
+<img src="{{ '/assets/img/rprogramming.png' | prepend: site.baseurl }}" id="rprogramming-tool">
 <img src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">
+<img src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool">
+
+### TOOLS
+<img src="{{ '/assets/img/elasticbeanstalk.png' | prepend: site.baseurl }}" id="elasticbeanstalk-tool">
+<img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
+<img src="{{ '/assets/img/composer.png' | prepend: site.baseurl }}" id="composer-tool">
+<img src="{{ '/assets/img/bigquery.png' | prepend: site.baseurl }}" id="bigquery-tool">
+<img src="{{ '/assets/img/gitlabcicd.png' | prepend: site.baseurl }}" id="gitlabcicd-tool">
+<img src="{{ '/assets/img/postgresql.png' | prepend: site.baseurl }}" id="postgresql-tool">
