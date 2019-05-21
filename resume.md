@@ -1,39 +1,55 @@
 ---
 layout: page
 title: Midhun Thaduru
-subtitle: Data Analyst
+subtitle: Senior Data Analyst
 ---
 
-<span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"><strong>> Download as PDF</strong></a> </span>
+<span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"><strong>> Download PDF</strong></a> </span>
 <br>
 
 ### SUMMARY
-``` Data science professional with 5.5 years of experience in analytics, specializing in statistical analysis, exploratory data analysis, predictive modeling, data mining and machine learning using open source tools for analysis. Interested in Data Mining, Machine Learning, Artifical Intelligence.  ```  
+Data science professional close to 5 years of experience in data warehousing, analytics, specializing in statistical analysis, exploratory data analysis, data mining and machine learning using open source tools for analysis. Interested in Data Mining, Machine Learning, Artificial Intelligence.  
 
 ### EXPERIENCE
 
-**Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Jan, 2016 - now</span>  
+**Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - now</span>  
 _Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
+* ```Scooter Diagnostics - Performance & Health Metrics```  
+Building metrics to evaulate performance and health of scooters. Incorporated a pipeline to calculate and send the results to scooter backend database for retrieval and analysis. _SQL, Python_   
+* ```Charging Behavioural Analytics - Product Insights```  
+Building metrics to understand the customer charging behaviour to improve charging pods and to build better product for customers.  _SQL, R, Python_   
+
+
+**Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Jan, 2016 - Feb, 2019</span>  
+_Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
+* ```Trip Identification and Trip History - Algorithms & Smart Features```  
+Developed an algorithm based on the data from the vehicle to identify riding sessions. Built application to calculate trip metrics for Ather mobile app. Created an automated pipeline for deploying the application on AWS Elastic Beanstalk using Gitlab CI/CD. _SQL, Python_  
+
 
 **Associate Data Analyst, Graymatter Software Services Pvt Ltd.** <span style="float: right; ">Mar, 2015 - Jan, 2016</span>  
 _Explore insurance domain. Build and test hypothesis and develop models using statistical methods and
 machine learning algorithms and deploy the models into the product._  
-R, SQL  
+* ```Customer Segmentation and Cross Selling```  
+Clustered customers based on their explicit and implicit behavior to cross sell insurance products. Worked on customer market segmentation using k-means & Partitioning Around Medoids clustering algorithms. _R, SQL_
+* ```Motor Insurance Fraud Claim Detection```  
+Built fraud detection model based on the customer vehicle profile, behavior profile and demographic behavior using Logistic Regression. Improved the model accuracy using tree based methods. _R, SQL_
+* ```Graymatter IA+```  
+Designed product for Cross-sell and Up-sell which includes data extraction, selection, rule engine recommendation and model based recommendation, monitoring and recalibrating the models. R
 
-**Associate Consultant, Zettamine Technologies Pvt Ltd.** <span style="float: right; ">Jul, 2013 - Jul, 2014</span>  
+
+**Associate Consultant, Nextwave Data Sciences** <span style="float: right; ">Jul, 2014 - Mar, 2015</span>  
 _Build POCs using open source tools for analysis_  
-R, SQL
+* ```Price Comparison of Crude Oil vs retail market in India```  
+Analyzed drop in crude oil prices in comparison with Indian retail market and the effect of deregulation of fuel prices in India. Collected the data by web-scraping using python beautiful soup. _R, Python_
 
 
-### PROJECTS
-**Scooter Diagnostics** - Performance & Health Metrics - Ather Energy Pvt. Ltd. <span style="float: right; ">On going</span>  
-Building metrics to evaulate performance and health of scooters. Incorporated a pipeline to calculate and send the results to scooter backend database for retrieval and analysis. _SQL, Python_   
+### HACKATHONS & PROJECTS
 
-**Trip Identification and Trip History** - Algorithms & Smart Features - Ather Energy Pvt. Ltd. <span style="float: right; ">On Going</span>  
-Developed an algorithm based on the data from the vehicle to identify riding sessions. Built application to calculate trip metrics for Ather mobile app. Created an automated pipeline for deploying the application on AWS Elastic Beanstalk using Gitlab CI/CD. _SQL, Python_  
+* ```MakeMyTrip Data Science Hiring Challenge, Classification Problem``` – Worked on 1 week online hackathon on HackerEarth. Ranked 6th of more than 3500 participants. _R_
+* ```Go-Jek Data Science Hackathon, Driver Duration Online Prediction``` – Built regression model based on driver ping timestamps and driver details. _R_
+* ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients``` – Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Logistic Regression to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
+* ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Used metrics like player form, fixture difficulty rating and player historical data for team selection. Ranked top 2 L of 6.3 Mil. _R_
 
-**Charging Behavioural Analytics** - Product Insights - Ather Energy Pvt. Ltd. <span style="float: right; ">On Going</span>  
-Building metrics to understand the customer charging behaviour to improve charging pods and to build better product for customers.  _SQL, R, Python_   
 
 ### EDUCATION
 
@@ -43,9 +59,9 @@ Important Courses and Electives: Probability and Statistics, Linear Algebra, Cal
 
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
 **AISSCE (M.P.C, Computer Science)**  
-Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2006.  
+Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2007.  
 
-#### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
+#### Jawahar Navodaya Vidyalaya <span style="float: right; ">2006</span>  
 **AISSE (CBSE Exam Class 10)**  
 
 
@@ -56,15 +72,44 @@ Authored an article on the importance of visualization, steps involved in the pr
 techniques, popular methods in data visualization and available open source data visualization tools.
 
 ### LANGUAGES
-<img src="{{ '/assets/img/rprogramming.jpg' | prepend: site.baseurl }}" id="rprogramming-tool">
-<img src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool">
-<img src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">    
-
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		<img src="/assets/img/rprogramming.jpg" width="125" height="150" id="rprogramming-tool">
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		<img src="/assets/img/python.png" width="310" height="120" id="python-tool">
+	</div>
+	<div style="flex:1;padding-left:100px;">
+		<img src="/assets/img/sql.png" width="120" height="120" id="sql-tool">
+	</div>
+</div>
+ 
 
 ### TOOLS
-<img src="{{ '/assets/img/elasticbeanstalk.png' | prepend: site.baseurl }}" id="elasticbeanstalk-tool">
-<img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
-<img src="{{ '/assets/img/composer.png' | prepend: site.baseurl }}" id="composer-tool">
-<img src="{{ '/assets/img/bigquery.png' | prepend: site.baseurl }}" id="bigquery-tool">
-<img src="{{ '/assets/img/gitlabcicd.png' | prepend: site.baseurl }}" id="gitlabcicd-tool">
-<img src="{{ '/assets/img/postgresql.png' | prepend: site.baseurl }}" id="postgresql-tool">
+
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		<img src="/assets/img/bigquery.png" width="250" height="250" id="bigquery-tool">
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		<img src="/assets/img/postgresql.png" id="postgresql-tool">
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		<img src="/assets/img/gitlabcicd.png" width="180" height="200" id="gitlabcicd-tool">
+	</div>
+	<div style="flex:1;padding-left:5px;">
+		<img src="/assets/img/grafana.png" id="grafana-tool">
+	</div>
+</div>
+
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		<img src="/assets/img/elasticbeanstalk.jpg" width="300" height="150" id="elasticbeanstalk-tool">
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		<img src="/assets/img/airflow.png" id="apache-airflow-tool">
+	</div>
+	<div style="flex:1;padding-left:5px;">
+		<img src="/assets/img/composer.png" width="140" height="135" id="composer-tool">
+	</div>
+</div>
