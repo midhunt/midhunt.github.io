@@ -56,13 +56,12 @@ Authored an article on the importance of visualization, steps involved in the pr
 techniques, popular methods in data visualization and available open source data visualization tools.
 
 ### LANGUAGES
-<img align = "left" src="{{ '/assets/img/rprogramming.jpg' | prepend: site.baseurl }}" id="rprogramming-tool"><img align = "center" src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool"><img align = "right" src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">
-
+<img align = "left" src="{{ '/assets/img/rprogramming.jpg' | prepend: site.baseurl }}" id="rprogramming-tool"><img align = "center" src="{{ '/assets/img/sql.png' | prepend: site.baseurl }}" id="sql-tool"><img align = "right" src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">    
 
 
 ### TOOLS
-<img src="{{ '/assets/img/elasticbeanstalk.png' | prepend: site.baseurl }}" id="elasticbeanstalk-tool">
-<img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
+<img src="{{ '/assets/img/elasticbeanstalk.png' | prepend: site.baseurl }}" id="elasticbeanstalk-tool"><img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
+
 <img src="{{ '/assets/img/composer.png' | prepend: site.baseurl }}" id="composer-tool">
 <img src="{{ '/assets/img/bigquery.png' | prepend: site.baseurl }}" id="bigquery-tool">
 <img src="{{ '/assets/img/gitlabcicd.png' | prepend: site.baseurl }}" id="gitlabcicd-tool">
