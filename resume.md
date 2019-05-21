@@ -45,8 +45,16 @@ Important Courses and Electives: Probability and Statistics, Linear Algebra, Cal
 **AISSCE (M.P.C, Computer Science)**  
 Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2006.  
 
+#### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
+**AISSE (CBSE Exam Class 10)**  
+
+
 ### PUBLICATIONS & RECOGNITION
 
 - **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <span style="float: right; ">November, 2014</span>  
 Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical
 techniques, popular methods in data visualization and available open source data visualization tools.
+
+### Tools & Languages
+<img src="{{ '/assets/img/airflow.png' | prepend: site.baseurl }}" id="airflow-tool">
+<img src="{{ '/assets/img/python.png' | prepend: site.baseurl }}" id="python-tool">
