@@ -1,18 +1,23 @@
 ---
 layout: page
 title: Midhun Thaduru
-subtitle: Senior Data Analyst
+subtitle: Data Scientist
 ---
 
 <span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"><strong>> Download PDF</strong></a> </span>
 <br>
 
 ### SUMMARY
-Data science professional close to 5 years of experience in data warehousing, analytics, specializing in statistical analysis, exploratory data analysis, data mining and machine learning using open source tools for analysis. Interested in Data Mining, Machine Learning, Artificial Intelligence.  
+Data science professional close to 7 years of experience in data warehousing, analytics, specializing in statistical analysis, exploratory data analysis, data mining and machine learning using open source tools for analysis. Interested in Data Mining, Machine Learning, Artificial Intelligence.  
 
 ### EXPERIENCE
+**Data Science Lead, Wicked Ride Adventure Services Pvt Ltd.(Bounce)** <span style="float: right; ">Mar, 2020 - Feb, 2021</span>  
+_Build a roadmap for Bounce EV and Zuink Data Science._
+* ```Bounce EV```
 
-**Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - now</span>  
+* ```Zuink```
+
+**Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - Mar, 2020</span>  
 _Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
 * ```Scooter Diagnostics - Performance & Health Metrics```  
 Building metrics to evaulate performance and health of scooters. Incorporated a pipeline to calculate and send the results to scooter backend database for retrieval and analysis. _SQL, Python_   
