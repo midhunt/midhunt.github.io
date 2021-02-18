@@ -10,9 +10,9 @@ esitemap:
 -->
 <div id="describe-text">
 	<p>I'm a data science professional. I love telling stories using data. I'm experienced in Statistical Analysis, Exploratory Data Analysis, Data Mining, Data Warehousing, and Machine Learning. I use open source tools like R and Python for my day to day analysis.</p>
-	<p>Switch to blog to know what I'm upto. Checkout my projects <strong><a href="https://github.com/midhunt">here</a></strong>.</p>
-	<p>Like my work, want to know more? you can contact me on LinkedIn or through mail.</p>
 	<p>I love travelling, reading, listening to podcasts, discussing about coming trends in Artificial Intelligence, Electric Vehicles, Books, Philosophy, Fianance, Startups. I love playing sports. I play football, cricket, volleyball, TT etc. I'm health conscious and fitness freak. have participated in Devil's circuit in 2017, 2018.</p>
+	<p>Switch to blog to know what I'm upto. Checkout my projects <strong><a href="https://github.com/midhunt">here</a></strong>.</p>
+	<p>I'm looking to freelance or fulltime opportunities and contribute to open source projects. Like my work, want to know more? you can contact me on LinkedIn or through mail.</p>
 </div>
 
 <style>
