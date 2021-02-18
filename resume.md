@@ -72,7 +72,7 @@ Achieved second in Math Olympiad Test at school level and selected for Regional 
 
 ### PUBLICATIONS & RECOGNITION
 
-- **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <span style="float: right; ">November, 2014</span>  
+- **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <span style="float: right; "><a href="{{ '/assets/coverstory.pdf' | prepend: site.baseurl }}"><strong>> Download PDF</strong></a> </span>
 Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical
 techniques, popular methods in data visualization and available open source data visualization tools.
 
@@ -109,12 +109,15 @@ techniques, popular methods in data visualization and available open source data
 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		<img src="/assets/img/elasticbeanstalk.jpg" width="300" height="150" id="elasticbeanstalk-tool">
+		<img src="/assets/img/aws-logo.jpg" width="300" height="150" id="aws-tool">
 	</div>
 	<div style="flex:1;padding-center:5px;">
 		<img src="/assets/img/airflow.png" id="apache-airflow-tool">
 	</div>
 	<div style="flex:1;padding-left:5px;">
 		<img src="/assets/img/composer.png" width="140" height="135" id="composer-tool">
+	</div>
+	<div style="flex:1;padding-left:5px;">
+		<img src="/assets/img/metabase.png" width="240" height="135" id="metabase-tool">
 	</div>
 </div>
