@@ -25,26 +25,31 @@ Analyzed the impact of motor controller update & regenerative braking on mileage
 of the vehicle and gave the necessary recommendations. _R_
 
 **Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - Mar, 2020</span>  
-_Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
-* ```Scooter Diagnostics - Performance & Health Metrics```  
-Building metrics to evaulate performance and health of scooters. Incorporated a pipeline to calculate and send the results to scooter backend database for retrieval and analysis. _SQL, Python_   
-* ```Charging Behavioural Analytics - Product Insights```  
-Building metrics to understand the customer charging behaviour to improve charging pods and to build better product for customers.  _SQL, R, Python_   
+_Explore and understand the engineering sub-systems of an electric scooter. Build smart features for scooters, develop tools and support internal stakeholders with data analysis, help them make better decisions, and build intelligent scooters._  
+
+* ```Health Metrics```  
+Designed and built ETL pipeline using Airflow for various use cases. Built metrics to evaluate the performance and health of scooter subsystems. Explored various enterprise and open source tools for dashboards. Created dashboards for visualizing the metrics. _Apache Airflow, SQL, Python, BigQuery, Tableau_
+* ```Charging and Ather Grid Analysis```  
+Analyzed the customers’ charging behavior to optimize battery, charger, and public charging POD
+performance. SQL, Python. _SQL, Python_   
 
 
 **Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Jan, 2016 - Feb, 2019</span>  
-_Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
-* ```Trip Identification and Trip History - Algorithms & Smart Features```  
-Developed an algorithm based on the data from the vehicle to identify riding sessions. Built application to calculate trip metrics for Ather mobile app. Created an automated pipeline for deploying the application on AWS Elastic Beanstalk using Gitlab CI/CD. _SQL, Python_  
+_Explore and understand the engineering sub-systems of an electric scooter. Build smart features for scooters, develop tools and support internal stakeholders with data analysis, help them make better decisions, and build intelligent scooters._  
+* ```Trip Identification and Trip History```  
+Developed an algorithm to identify riding and charging sessions. Built an application to
+calculate ride statistics for the Ather mobile app. Created a pipeline for deploying the application on Elastic Beanstalk using CI/CD. _SQL, Python_
+* ```Make Every Scooter Smart and Intelligent (MESSI)```
+Built data pipeline from DAQ for ICE scooters. Created a dashboard on GCP for validating, analyzing the ride data. _R, Shiny_
 
 
 **Associate Data Analyst, Graymatter Software Services Pvt Ltd.** <span style="float: right; ">Mar, 2015 - Jan, 2016</span>  
 _Explore insurance domain. Build and test hypothesis and develop models using statistical methods and
 machine learning algorithms and deploy the models into the product._  
 * ```Customer Segmentation and Cross Selling```  
-Clustered customers based on their explicit and implicit behavior to cross sell insurance products. Worked on customer market segmentation using k-means & Partitioning Around Medoids clustering algorithms. _R, SQL_
+Clustered customers based on their explicit and implicit behavior to cross sell insurance products. Worked on customer market segmentation using clustering algorithms. _R, SQL_
 * ```Motor Insurance Fraud Claim Detection```  
-Built fraud detection model based on the customer vehicle profile, behavior profile and demographic behavior using Logistic Regression. Improved the model accuracy using tree based methods. _R, SQL_
+Built fraud detection model based on the customer vehicle profile, behavior profile and demographic behavior using classification techniques. Improved the model accuracy using tree based methods. _R, SQL_
 * ```Graymatter IA+```  
 Designed product for Cross-sell and Up-sell which includes data extraction, selection, rule engine recommendation and model based recommendation, monitoring and recalibrating the models. R
 
@@ -52,7 +57,7 @@ Designed product for Cross-sell and Up-sell which includes data extraction, sele
 **Associate Consultant, Nextwave Data Sciences** <span style="float: right; ">Jul, 2014 - Mar, 2015</span>  
 _Build POCs using open source tools for analysis_  
 * ```Price Comparison of Crude Oil vs retail market in India```  
-Analyzed drop in crude oil prices in comparison with Indian retail market and the effect of deregulation of fuel prices in India. Collected the data by web-scraping using python beautiful soup. _R, Python_
+Analyzed drop in crude oil prices in comparison with Indian retail market and the effect of deregulation of fuel prices in India. Collected the data by web-scraping using python beautiful-soup. _R, Python_
 
 
 ### HACKATHONS & PROJECTS
@@ -60,7 +65,7 @@ Analyzed drop in crude oil prices in comparison with Indian retail market and th
 * ```MakeMyTrip Data Science Hiring Challenge, Classification Problem``` – Worked on 1 week online hackathon on HackerEarth. Ranked 6th of more than 3500 participants. _R_
 * ```Go-Jek Data Science Hackathon, Driver Duration Online Prediction``` – Built regression model based on driver ping timestamps and driver details. _R_
 * ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients``` – Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Logistic Regression to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
-* ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Used metrics like player form, fixture difficulty rating and player historical data for team selection. Ranked top 2 L of 6.3 Mil. _R_
+* ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Built and updated my fantasy team based on player week on week performance. Ranked top 2 L of 6.3 Mil. _R_
 
 ### PUBLICATIONS & RECOGNITION
 
@@ -71,7 +76,30 @@ Authored an article on the importance of visualization, steps involved in the pr
 
 #### Birla Institute of Technology and Science, Pilani <span style="float: right; ">2009 - 2013</span>  
 **Bachelor of Pharmacy(Honours)**  
-Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management    
+Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management   
+
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		Probability and Statistics
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		Linear Algebra
+	</div>
+	<div style="flex:1;padding-left:100px;">
+		Calculus
+	</div>
+</div> 
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		Computer Programming
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		Object Oriented Programming
+	</div>
+	<div style="flex:1;padding-left:100px;">
+		Optimization
+	</div>
+</div> 
 
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
 **AISSCE (CBSE, M.P.C, Computer Science, 12th Standard)**  
