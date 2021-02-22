@@ -80,35 +80,35 @@ Important Courses and Electives: Probability and Statistics, Linear Algebra, Cal
 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		<ol><li>Probability and Statistics</li></ol>
+		<ul><li>Probability and Statistics</li></ul>
 	</div>
 	<div style="flex:1;padding-center:5px;">
-		<ol><li>Linear Algebra</li></ol>
+		<yl><li>Linear Algebra</li></ul>
 	</div>
 	<div style="flex:1;padding-left:100px;">
-		<ol><li>Calculus</li></ol>
+		<ul><li>Calculus</li></ul>
 	</div>
 </div> 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		<ol><li>Computer Programming</li></ol>
+		<ul><li>Computer Programming</li></ul>
 	</div>
 	<div style="flex:1;padding-center:5px;">
-		<ol><li>Object Oriented Programming</li></ol>
+		<ul><li>Object Oriented Programming</li></ul>
 	</div>
 	<div style="flex:1;padding-left:100px;">
-		<ol><li>Optimization</li></ol>
+		<ul><li>Optimization</li></ul>
 	</div>
 </div> 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		<ol><li>Operations Research</li></ol>
+		<ul><li>Operations Research</li></ul>
 	</div>
 	<div style="flex:1;padding-center:5px;">
-		<ol><li>Principles of Economics</li></ol>
+		<ul><li>Principles of Economics</li></ul>
 	</div>
 	<div style="flex:1;padding-left:100px;">
-		<ol><li>Principles of Management</li></ol>
+		<ul><li>Principles of Management</li></ul>
 	</div>
 </div> 
 
