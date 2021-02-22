@@ -60,9 +60,12 @@ Analyzed drop in crude oil prices in comparison with Indian retail market and th
 
 ### HACKATHONS & PROJECTS
 
-* ```MakeMyTrip Data Science Hiring Challenge, Classification Problem``` – Worked on 1 week online hackathon on HackerEarth. Ranked 6th of more than 3500 participants. _R_
-* ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients``` – Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Regression technique to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
-* ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Built and updated my fantasy team based on player week on week performance. Ranked top 2 L of 6.3 Mil. _R_
+* ```MakeMyTrip Data Science Hiring Challenge, Classification Problem```  
+Worked on 1-week online hackathon on HackerEarth. Ranked 6th of more than 3500 participants. _R_
+* ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients```  
+Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Regression technique to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
+* ```Fantasy Premier League - Knapsack Problem```  
+Scraped data from FPL. Built and updated my fantasy team based on player week on week performance. Ranked top 2 L of 6.3 Mil. _R_
 
 
 ### PUBLICATIONS & RECOGNITION
