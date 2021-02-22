@@ -78,40 +78,6 @@ Authored an article on the importance of visualization, steps involved in the pr
 **Bachelor of Pharmacy(Honours)**  
 Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management   
 
-<div style="display:flex">
-	<div style="flex:1;padding-right:5px;">
-		<ul><li>Probability and Statistics</li></ul>
-	</div>
-	<div style="flex:1;padding-center:5px;">
-		<yl><li>Linear Algebra</li></ul>
-	</div>
-	<div style="flex:1;padding-left:100px;">
-		<ul><li>Calculus</li></ul>
-	</div>
-</div> 
-<div style="display:flex">
-	<div style="flex:1;padding-right:5px;">
-		<ul><li>Computer Programming</li></ul>
-	</div>
-	<div style="flex:1;padding-center:5px;">
-		<ul><li>Object Oriented Programming</li></ul>
-	</div>
-	<div style="flex:1;padding-left:100px;">
-		<ul><li>Optimization</li></ul>
-	</div>
-</div> 
-<div style="display:flex">
-	<div style="flex:1;padding-right:5px;">
-		<ul><li>Operations Research</li></ul>
-	</div>
-	<div style="flex:1;padding-center:5px;">
-		<ul><li>Principles of Economics</li></ul>
-	</div>
-	<div style="flex:1;padding-left:100px;">
-		<ul><li>Principles of Management</li></ul>
-	</div>
-</div> 
-
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
 **AISSCE (CBSE, M.P.C, Computer Science, 12th Standard)**  
 Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2007.  
