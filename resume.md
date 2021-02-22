@@ -80,24 +80,35 @@ Important Courses and Electives: Probability and Statistics, Linear Algebra, Cal
 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		Probability and Statistics
+		<ol><li>Probability and Statistics</li></ol>
 	</div>
 	<div style="flex:1;padding-center:5px;">
-		Linear Algebra
+		<ol><li>Linear Algebra</li></ol>
 	</div>
 	<div style="flex:1;padding-left:100px;">
-		Calculus
+		<ol><li>Calculus</li></ol>
 	</div>
 </div> 
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
-		Computer Programming
+		<ol><li>Computer Programming</li></ol>
 	</div>
 	<div style="flex:1;padding-center:5px;">
-		Object Oriented Programming
+		<ol><li>Object Oriented Programming</li></ol>
 	</div>
 	<div style="flex:1;padding-left:100px;">
-		Optimization
+		<ol><li>Optimization</li></ol>
+	</div>
+</div> 
+<div style="display:flex">
+	<div style="flex:1;padding-right:5px;">
+		<ol><li>Operations Research</li></ol>
+	</div>
+	<div style="flex:1;padding-center:5px;">
+		<ol><li>Principles of Economics</li></ol>
+	</div>
+	<div style="flex:1;padding-left:100px;">
+		<ol><li>Principles of Management</li></ol>
 	</div>
 </div> 
 
