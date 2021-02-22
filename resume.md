@@ -4,7 +4,7 @@ title: Midhun Thaduru
 subtitle: Data Scientist
 ---
 
-<span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"><strong>> Download PDF</strong></a> </span>
+<span style="float: right; "><a href="{{ '/assets/resume.pdf' | prepend: site.baseurl }}"></a> </span>
 <br>
 
 ### SUMMARY
@@ -12,17 +12,17 @@ Data science professional close to 7 years of experience in data warehousing, an
 
 ### EXPERIENCE
 **Data Science Lead, Wicked Ride Adventure Services Pvt Ltd.(Bounce)** <span style="float: right; ">Mar, 2020 - Feb, 2021</span>  
-_Layout a roadmap for Zuink & EV Data Sciences. Plan on infrastructure for real-time analytics and alerts. Build models & tools to optimize the battery-swapping network, usage of batteries and improve the calendar life of the batteries in turn optimize the usage of EV without affecting the vehicle performance._
+_Layout a roadmap for Zuink & EV Data Sciences. Plan on infrastructure for real-time analytics and alerts. Build models & tools to optimize the battery-swapping network, usage of batteries and improve the calendar life of the batteries in turn optimize the usage of EV._  
+
 * ```Network Optimization```
-Identified locations of new kirana partners to tie up along with the existing partners for battery swapping stations (BSS) using clustering algorithms. Built a network optimization tool called Bridgeman. _R_
+Identified locations of new swapping stations to tie up along with the existing partners for battery swapping stations (BSS) using clustering algorithms. Built a network optimization tool called Bridgeman for regular monitoring of swapping activity & performance. _R_
 * ```Get Me a Battery (GMAB)```
 Built an algorithm to allocate multiple batteries to the agent from their location and based on the
-availability of swapping station & charged batteries at BSS. _Python_
-* ```EV Mileage Analysis```
-Built a dashboard on Metabase to capture weekly EV mileage metrics and analyzed the drop in EV mileage to understand the performance of batteries and EVs. _SQL, Metabase_
+availability of BSS(s) & charged batteries at BSS. _Python_
 * ```Controller Update A/B Testing```
 Analyzed the impact of motor controller update & regenerative braking on mileage and performance
 of the vehicle and gave the necessary recommendations. _R_
+
 
 **Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - Mar, 2020</span>  
 _Explore and understand the engineering sub-systems of an electric scooter. Build smart features for scooters, develop tools and support internal stakeholders with data analysis, help them make better decisions, and build intelligent scooters._  
@@ -49,9 +49,7 @@ machine learning algorithms and deploy the models into the product._
 * ```Customer Segmentation and Cross Selling```  
 Clustered customers based on their explicit and implicit behavior to cross sell insurance products. Worked on customer market segmentation using clustering algorithms. _R, SQL_
 * ```Motor Insurance Fraud Claim Detection```  
-Built fraud detection model based on the customer vehicle profile, behavior profile and demographic behavior using classification techniques. Improved the model accuracy using tree based methods. _R, SQL_
-* ```Graymatter IA+```  
-Designed product for Cross-sell and Up-sell which includes data extraction, selection, rule engine recommendation and model based recommendation, monitoring and recalibrating the models. R
+Built fraud detection model based on the customer vehicle profile, behavior profile and demographic behavior using classification techniques. Improved the model accuracy using tree based methods. _R, SQL_  
 
 
 **Associate Consultant, Nextwave Data Sciences** <span style="float: right; ">Jul, 2014 - Mar, 2015</span>  
@@ -63,14 +61,15 @@ Analyzed drop in crude oil prices in comparison with Indian retail market and th
 ### HACKATHONS & PROJECTS
 
 * ```MakeMyTrip Data Science Hiring Challenge, Classification Problem``` – Worked on 1 week online hackathon on HackerEarth. Ranked 6th of more than 3500 participants. _R_
-* ```Go-Jek Data Science Hackathon, Driver Duration Online Prediction``` – Built regression model based on driver ping timestamps and driver details. _R_
 * ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients``` – Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Regression technique to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
 * ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Built and updated my fantasy team based on player week on week performance. Ranked top 2 L of 6.3 Mil. _R_
+
 
 ### PUBLICATIONS & RECOGNITION
 
 - **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <a href="{{'/assets/coverstory.pdf' | prepend: site.baseurl }}"><em>(Download PDF)</em></a><span style="float: right; ">November, 2014</span>  
 Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical techniques, popular methods in data visualization and available open source data visualization tools.
+
 
 ### EDUCATION
 
@@ -78,14 +77,9 @@ Authored an article on the importance of visualization, steps involved in the pr
 **Bachelor of Pharmacy(Honours)**  
 Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management   
 
-#### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
-**AISSCE (CBSE, M.P.C, Computer Science, 12th Standard)**  
-Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2007.  
-
-#### Jawahar Navodaya Vidyalaya <span style="float: right; ">2006</span>  
-**AISSE (CBSE, 10th Standard)**  
 
 ### LANGUAGES
+
 <div style="display:flex">
 	<div style="flex:1;padding-right:5px;">
 		<img src="/assets/img/rprogramming.jpg" width="125" height="150" id="rprogramming-tool">
