@@ -14,12 +14,12 @@ Data science professional close to 7 years of experience in data warehousing, an
 **Data Science Lead, Wicked Ride Adventure Services Pvt Ltd.(Bounce)** <span style="float: right; ">Mar, 2020 - Feb, 2021</span>  
 _Layout a roadmap for Zuink & EV Data Sciences. Plan on infrastructure for real-time analytics and alerts. Build models & tools to optimize the battery-swapping network, usage of batteries and improve the calendar life of the batteries in turn optimize the usage of EV._  
 
-* ```Network Optimization```
+* ```Network Optimization```  
 Identified locations of new swapping stations to tie up along with the existing partners for battery swapping stations (BSS) using clustering algorithms. Built a network optimization tool called Bridgeman for regular monitoring of swapping activity & performance. _R_
-* ```Get Me a Battery (GMAB)```
+* ```Get Me a Battery (GMAB)```  
 Built an algorithm to allocate multiple batteries to the agent from their location and based on the
-availability of BSS(s) & charged batteries at BSS. _Python_
-* ```Controller Update A/B Testing```
+availability of BSS & charged batteries at BSS. _Python_
+* ```Controller Update A/B Testing```  
 Analyzed the impact of motor controller update & regenerative braking on mileage and performance
 of the vehicle and gave the necessary recommendations. _R_
 
