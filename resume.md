@@ -12,10 +12,17 @@ Data science professional close to 7 years of experience in data warehousing, an
 
 ### EXPERIENCE
 **Data Science Lead, Wicked Ride Adventure Services Pvt Ltd.(Bounce)** <span style="float: right; ">Mar, 2020 - Feb, 2021</span>  
-_Build a roadmap for Bounce EV and Zuink Data Science._
-* ```Bounce EV```
-
-* ```Zuink```
+_Layout a roadmap for Zuink & EV Data Sciences. Plan on infrastructure for real-time analytics and alerts. Build models & tools to optimize the battery-swapping network, usage of batteries and improve the calendar life of the batteries in turn optimize the usage of EV without affecting the vehicle performance._
+* ```Network Optimization```
+Identified locations of new kirana partners to tie up along with the existing partners for battery swapping stations (BSS) using clustering algorithms. Built a network optimization tool called Bridgeman. _R_
+* ```Get Me a Battery (GMAB)```
+Built an algorithm to allocate multiple batteries to the agent from their location and based on the
+availability of swapping station & charged batteries at BSS. _Python_
+* ```EV Mileage Analysis```
+Built a dashboard on Metabase to capture weekly EV mileage metrics and analyzed the drop in EV mileage to understand the performance of batteries and EVs. _SQL, Metabase_
+* ```Controller Update A/B Testing```
+Analyzed the impact of motor controller update & regenerative braking on mileage and performance
+of the vehicle and gave the necessary recommendations. _R_
 
 **Senior Data Analyst, Ather Energy Pvt Ltd.** <span style="float: right; ">Feb, 2019 - Mar, 2020</span>  
 _Explore and understand engineering sub-systems of an electric scooter. Build smart features for scooter, develop tools and support internal stake holders with the data analysis, help them take better decisions and build smart scooter._  
@@ -55,6 +62,10 @@ Analyzed drop in crude oil prices in comparison with Indian retail market and th
 * ```McKinsey Healthcare Analytics Hackathon, Prediction of Probability of Stroke to Patients``` – Worked on 24 hour online hackathon challenge on Analytics Vidhya. Used Logistic Regression to predict probability of stroke. Ranked 59th of more than 2000 participants. _R_
 * ```Fantasy Premier League - Knapsack Problem``` - Scraped data from FPL. Used metrics like player form, fixture difficulty rating and player historical data for team selection. Ranked top 2 L of 6.3 Mil. _R_
 
+### PUBLICATIONS & RECOGNITION
+
+- **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <a href="{{'/assets/coverstory.pdf' | prepend: site.baseurl }}"><em>(Download PDF)</em></a><span style="float: right; ">November, 2014</span>  
+Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical techniques, popular methods in data visualization and available open source data visualization tools.
 
 ### EDUCATION
 
@@ -63,17 +74,11 @@ Analyzed drop in crude oil prices in comparison with Indian retail market and th
 Important Courses and Electives: Probability and Statistics, Linear Algebra, Calculus, Computer Programming, object Oriented Programming, Optimization, Operations Research, Principles of Economics, Principles of Management    
 
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2008</span>  
-**AISSCE (M.P.C, Computer Science)**  
+**AISSCE (CBSE, M.P.C, Computer Science, 12th Standard)**  
 Achieved second in Math Olympiad Test at school level and selected for Regional Math Olympiad Test, 2007.  
 
 #### Jawahar Navodaya Vidyalaya <span style="float: right; ">2006</span>  
-**AISSE (CBSE Exam Class 10)**  
-
-
-### PUBLICATIONS & RECOGNITION
-
-- **Visualization - Techniques, Methods and Tools** - Cover Story, CSI Communications. <a href="{{'/assets/coverstory.pdf' | prepend: site.baseurl }}"><em>(Download PDF)</em></a><span style="float: right; ">November, 2014</span>  
-Authored an article on the importance of visualization, steps involved in the process of visualization, available graphical techniques, popular methods in data visualization and available open source data visualization tools.
+**AISSE (CBSE, 10th Standard)**  
 
 ### LANGUAGES
 <div style="display:flex">
